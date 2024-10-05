@@ -6,6 +6,7 @@ Handle missing values in Gender, State, and Zip Code.
 Standardize column names (lowercase and underscores).
 
 # Customers Dataset Cleaning
+customers_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Customers.csv', encoding='latin1')
 customers_df['Birthday'] = pd.to_datetime(customers_df['Birthday'], errors='coerce')
 customers_df.fillna({'Gender': 'Unknown', 'State': 'Unknown', 'Zip Code': 'Unknown'}, inplace=True)
 customers_df.columns = customers_df.columns.str.strip().str.lower().str.replace(' ', '_')
@@ -18,6 +19,8 @@ Convert Exchange to numeric.
 Standardize column names.
 
 # Exchange Rates Dataset Cleaning
+# Loading datasets from the specified path
+exchange_rates_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Exchange_Rates.csv', encoding='latin1')
 exchange_rates_df['Date'] = pd.to_datetime(exchange_rates_df['Date'], errors='coerce')
 exchange_rates_df['Exchange'] = pd.to_numeric(exchange_rates_df['Exchange'], errors='coerce')
 exchange_rates_df.columns = exchange_rates_df.columns.str.strip().str.lower().str.replace(' ', '_')
@@ -31,6 +34,7 @@ Standardize column names.
 Remove duplicates.
 
 # Products Dataset Cleaning
+products_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Products.csv', encoding='latin1')
 products_df['Unit Cost USD'] = products_df['Unit Cost USD'].replace('[\$,]', '', regex=True).astype(float)
 products_df['Unit Price USD'] = products_df['Unit Price USD'].replace('[\$,]', '', regex=True).astype(float)
 # Handling outliers
@@ -55,6 +59,7 @@ Standardize column names.
 Remove duplicates.
 
 # Sales Dataset Cleaning
+sales_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Sales.csv', encoding='latin1')
 sales_df['Order Date'] = pd.to_datetime(sales_df['Order Date'], errors='coerce')
 sales_df['Delivery Date'] = pd.to_datetime(sales_df['Delivery Date'], errors='coerce')
 sales_df.columns = sales_df.columns.str.strip().str.lower().str.replace(' ', '_')
@@ -67,6 +72,7 @@ Standardize column names.
 Remove duplicates.
 
 # Stores Dataset Cleaning
+stores_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Stores.csv', encoding='latin1')
 stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], errors='coerce')
 stores_df.columns = stores_df.columns.str.strip().str.lower().str.replace(' ', '_')
 stores_df.drop_duplicates(inplace=True)
