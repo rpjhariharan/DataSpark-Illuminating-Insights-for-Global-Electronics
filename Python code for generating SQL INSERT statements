@@ -1,0 +1,81 @@
+1. Customers Table
+
+import pandas as pd
+
+# Load the Customers dataset
+customers_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Customers.csv')
+
+# Generate INSERT statements for Customers table
+for index, row in customers_df.iterrows():
+    print(f"INSERT INTO Customers (customerkey, gender, name, city, state_code, state, zip_code, country, continent, birthday) "
+          f"VALUES ({row['customerkey']}, '{row['gender']}', '{row['name']}', '{row['city']}', '{row['state_code']}', "
+          f"'{row['state']}', '{row['zip_code']}', '{row['country']}', '{row['continent']}', '{row['birthday']}');")
+
+
+
+2. Exchange Rates Table
+
+# Load the Exchange Rates dataset
+exchange_rates_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Exchange_Rates.csv')
+
+# Generate INSERT statements for Exchange Rates table
+for index, row in exchange_rates_df.iterrows():
+    print(f"INSERT INTO Exchange_Rates (date, currency_code, exchange_rate) "
+          f"VALUES ('{row['date']}', '{row['currency_code']}', {row['exchange_rate']});")
+
+
+
+3. Products Table
+
+# Load the Products dataset
+products_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Products.csv')
+
+# Generate INSERT statements for Products table
+for index, row in products_df.iterrows():
+    print(f"INSERT INTO Products (productkey, product_name, brand, color, unit_cost_usd, unit_price_usd, subcategorykey, subcategory, categorykey, category) "
+          f"VALUES ({row['productkey']}, '{row['product_name']}', '{row['brand']}', '{row['color']}', {row['unit_cost_usd']}, {row['unit_price_usd']}, "
+          f"{row['subcategorykey']}, '{row['subcategory']}', {row['categorykey']}, '{row['category']}');")
+
+
+
+4. Sales Table
+
+# Load the Sales dataset
+sales_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Sales.csv')
+
+# Generate INSERT statements for Sales table
+for index, row in sales_df.iterrows():
+    print(f"INSERT INTO Sales (order_number, line_item, order_date, delivery_date, customerkey, storekey, productkey, quantity, currency_code) "
+          f"VALUES ({row['order_number']}, {row['line_item']}, '{row['order_date']}', '{row['delivery_date']}', {row['customerkey']}, {row['storekey']}, "
+          f"{row['productkey']}, {row['quantity']}, '{row['currency_code']}');")
+
+
+
+5. Stores Table
+
+# Load the Stores dataset
+stores_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Stores.csv')
+
+# Generate INSERT statements for Stores table
+for index, row in stores_df.iterrows():
+    print(f"INSERT INTO Stores (storekey, country, state, square_meters, open_date) "
+          f"VALUES ({row['storekey']}, '{row['country']}', '{row['state']}', {row['square_meters']}, '{row['open_date']}');")
+
+
+
+
+6. Merged Table
+
+# Load the Final Merged dataset
+merged_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Final_Merged_Dataset.csv')
+
+# Generate INSERT statements for the Merged table
+for index, row in merged_df.iterrows():
+    print(f"INSERT INTO Merged (order_number, line_item, order_date, delivery_date, customerkey, storekey, productkey, quantity, currency_code, "
+          f"gender, customer_name, city, state_code, state, zip_code, country, continent, birthday, product_name, brand, color, unit_cost_usd, "
+          f"unit_price_usd, store_country, store_state, square_meters, open_date, exchange_rate) "
+          f"VALUES ({row['order_number']}, {row['line_item']}, '{row['order_date']}', '{row['delivery_date']}', {row['customerkey']}, {row['storekey']}, "
+          f"{row['productkey']}, {row['quantity']}, '{row['currency_code']}', '{row['gender']}', '{row['customer_name']}', '{row['city']}', '{row['state_code']}', "
+          f"'{row['state']}', '{row['zip_code']}', '{row['country']}', '{row['continent']}', '{row['birthday']}', '{row['product_name']}', '{row['brand']}', "
+          f"'{row['color']}', {row['unit_cost_usd']}, {row['unit_price_usd']}, '{row['store_country']}', '{row['store_state']}', {row['square_meters']}, "
+          f"'{row['open_date']}', {row['exchange_rate']});")
