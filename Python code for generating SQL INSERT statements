@@ -67,7 +67,7 @@ for index, row in stores_df.iterrows():
 6. Merged Table
 
 # Load the Final Merged dataset
-merged_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Final_Merged_Dataset.csv')
+merged_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Final_Merged.csv')
 
 # Generate INSERT statements for the Merged table
 for index, row in merged_df.iterrows():
