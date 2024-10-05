@@ -11,6 +11,7 @@ customers_df['Birthday'] = pd.to_datetime(customers_df['Birthday'], errors='coer
 customers_df.fillna({'Gender': 'Unknown', 'State': 'Unknown', 'Zip Code': 'Unknown'}, inplace=True)
 customers_df.columns = customers_df.columns.str.strip().str.lower().str.replace(' ', '_')
 customers_df.drop_duplicates(inplace=True)
+customers_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\customers_final_cleaned.csv', index=False)
 
 
 2. Exchange Rates Dataset Cleaning
@@ -24,6 +25,7 @@ exchange_rates_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Ex
 exchange_rates_df['Date'] = pd.to_datetime(exchange_rates_df['Date'], errors='coerce')
 exchange_rates_df['Exchange'] = pd.to_numeric(exchange_rates_df['Exchange'], errors='coerce')
 exchange_rates_df.columns = exchange_rates_df.columns.str.strip().str.lower().str.replace(' ', '_')
+exchange_rates_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\exchange_rates_final_cleaned.csv', index=False)
 
 
 3. Products Dataset Cleaning
@@ -51,6 +53,7 @@ products_df[['unit_cost_usd', 'unit_price_usd']] = scaler.fit_transform(products
 # Standardize column names and remove duplicates
 products_df.columns = products_df.columns.str.strip().str.lower().str.replace(' ', '_')
 products_df.drop_duplicates(inplace=True)
+products_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\products_final_cleaned.csv', index=False)
 
 
 4. Sales Dataset Cleaning
@@ -64,6 +67,7 @@ sales_df['Order Date'] = pd.to_datetime(sales_df['Order Date'], errors='coerce')
 sales_df['Delivery Date'] = pd.to_datetime(sales_df['Delivery Date'], errors='coerce')
 sales_df.columns = sales_df.columns.str.strip().str.lower().str.replace(' ', '_')
 sales_df.drop_duplicates(inplace=True)
+sales_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\sales_final_cleaned.csv', index=False)
 
 
 5. Stores Dataset Cleaning
@@ -76,6 +80,7 @@ stores_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Stores.csv
 stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], errors='coerce')
 stores_df.columns = stores_df.columns.str.strip().str.lower().str.replace(' ', '_')
 stores_df.drop_duplicates(inplace=True)
+stores_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\stores_final_cleaned.csv', index=False)
 
 
 6. Final Integration and Merging
@@ -99,3 +104,5 @@ merged_df = pd.merge(merged_df, exchange_rates_df, left_on=['order_date_only', '
 
 # Dropping temporary columns
 merged_df.drop(['order_date_only', 'date_only', 'currency'], axis=1, inplace=True)
+
+merged_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\integrated_final_cleaned_dataset.csv', index=False)
