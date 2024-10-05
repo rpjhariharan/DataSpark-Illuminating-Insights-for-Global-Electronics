@@ -105,4 +105,4 @@ merged_df = pd.merge(merged_df, exchange_rates_df, left_on=['order_date_only', '
 # Dropping temporary columns
 merged_df.drop(['order_date_only', 'date_only', 'currency'], axis=1, inplace=True)
 
-merged_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\Cleaned_Integrated.csv', index=False)
+merged_df.to_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\final\Final_Merged.csv', index=False)
