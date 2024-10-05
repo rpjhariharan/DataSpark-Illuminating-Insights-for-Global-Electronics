@@ -1,0 +1,99 @@
+Create the Database: Create a database named Global Electronics.
+Create the Six Tables: Create tables corresponding to each dataset (Customers, Exchange Rates, Products, Sales, Stores, and Merged) with the necessary schema.
+
+Create the Database
+CREATE DATABASE Global_Electronics;
+USE Global_Electronics;
+
+Create the Tables
+Customers Table
+CREATE TABLE Customers (
+    customerkey INT PRIMARY KEY,
+    gender VARCHAR(50),
+    name VARCHAR(255),
+    city VARCHAR(100),
+    state_code VARCHAR(10),
+    state VARCHAR(100),
+    zip_code VARCHAR(20),
+    country VARCHAR(100),
+    continent VARCHAR(50),
+    birthday DATE
+);
+
+Exchange Rates Table
+CREATE TABLE Exchange_Rates (
+    date DATE PRIMARY KEY,
+    currency_code VARCHAR(10),
+    exchange_rate DECIMAL(10, 5)
+);
+
+Products Table
+CREATE TABLE Products (
+    productkey INT PRIMARY KEY,
+    product_name VARCHAR(255),
+    brand VARCHAR(100),
+    color VARCHAR(50),
+    unit_cost_usd DECIMAL(10, 5),
+    unit_price_usd DECIMAL(10, 5),
+    subcategorykey INT,
+    subcategory VARCHAR(100),
+    categorykey INT,
+    category VARCHAR(100)
+);
+
+Sales Table
+CREATE TABLE Sales (
+    order_number INT PRIMARY KEY,
+    line_item INT,
+    order_date DATE,
+    delivery_date DATE,
+    customerkey INT,
+    storekey INT,
+    productkey INT,
+    quantity INT,
+    currency_code VARCHAR(10),
+    FOREIGN KEY (customerkey) REFERENCES Customers(customerkey),
+    FOREIGN KEY (storekey) REFERENCES Stores(storekey),
+    FOREIGN KEY (productkey) REFERENCES Products(productkey)
+);
+
+Stores Table
+CREATE TABLE Stores (
+    storekey INT PRIMARY KEY,
+    country VARCHAR(100),
+    state VARCHAR(100),
+    square_meters DECIMAL(10, 2),
+    open_date DATE
+);
+
+Merged Table
+CREATE TABLE Merged (
+    order_number INT PRIMARY KEY,
+    line_item INT,
+    order_date DATE,
+    delivery_date DATE,
+    customerkey INT,
+    storekey INT,
+    productkey INT,
+    quantity INT,
+    currency_code VARCHAR(10),
+    gender VARCHAR(50),
+    customer_name VARCHAR(255),
+    city VARCHAR(100),
+    state_code VARCHAR(10),
+    state VARCHAR(100),
+    zip_code VARCHAR(20),
+    country VARCHAR(100),
+    continent VARCHAR(50),
+    birthday DATE,
+    product_name VARCHAR(255),
+    brand VARCHAR(100),
+    color VARCHAR(50),
+    unit_cost_usd DECIMAL(10, 5),
+    unit_price_usd DECIMAL(10, 5),
+    store_country VARCHAR(100),
+    store_state VARCHAR(100),
+    square_meters DECIMAL(10, 2),
+    open_date DATE,
+    exchange_rate DECIMAL(10, 5)
+);
