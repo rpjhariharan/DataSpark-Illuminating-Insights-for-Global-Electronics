@@ -1,0 +1,95 @@
+The cleaning steps and their respective Python codes for each dataset:
+
+1. Customers Dataset Cleaning
+Convert Birthday to a standardized date format.
+Handle missing values in Gender, State, and Zip Code.
+Standardize column names (lowercase and underscores).
+
+# Customers Dataset Cleaning
+customers_df['Birthday'] = pd.to_datetime(customers_df['Birthday'], errors='coerce')
+customers_df.fillna({'Gender': 'Unknown', 'State': 'Unknown', 'Zip Code': 'Unknown'}, inplace=True)
+customers_df.columns = customers_df.columns.str.strip().str.lower().str.replace(' ', '_')
+customers_df.drop_duplicates(inplace=True)
+
+
+2. Exchange Rates Dataset Cleaning
+Convert Date to a standardized date format.
+Convert Exchange to numeric.
+Standardize column names.
+
+# Exchange Rates Dataset Cleaning
+exchange_rates_df['Date'] = pd.to_datetime(exchange_rates_df['Date'], errors='coerce')
+exchange_rates_df['Exchange'] = pd.to_numeric(exchange_rates_df['Exchange'], errors='coerce')
+exchange_rates_df.columns = exchange_rates_df.columns.str.strip().str.lower().str.replace(' ', '_')
+
+
+3. Products Dataset Cleaning
+Remove dollar signs from Unit Cost USD and Unit Price USD and convert to numeric.
+Normalize (scale) Unit Cost USD and Unit Price USD.
+Handle outliers by capping extreme values (1st and 99th percentile).
+Standardize column names.
+Remove duplicates.
+
+# Products Dataset Cleaning
+products_df['Unit Cost USD'] = products_df['Unit Cost USD'].replace('[\$,]', '', regex=True).astype(float)
+products_df['Unit Price USD'] = products_df['Unit Price USD'].replace('[\$,]', '', regex=True).astype(float)
+# Handling outliers
+unit_cost_lower = products_df['unit_cost_usd'].quantile(0.01)
+unit_cost_upper = products_df['unit_cost_usd'].quantile(0.99)
+products_df['unit_cost_usd'] = products_df['unit_cost_usd'].clip(lower=unit_cost_lower, upper=unit_cost_upper)
+unit_price_lower = products_df['unit_price_usd'].quantile(0.01)
+unit_price_upper = products_df['unit_price_usd'].quantile(0.99)
+products_df['unit_price_usd'] = products_df['unit_price_usd'].clip(lower=unit_price_lower, upper=unit_price_upper)
+# Normalize using MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+products_df[['unit_cost_usd', 'unit_price_usd']] = scaler.fit_transform(products_df[['unit_cost_usd', 'unit_price_usd']])
+# Standardize column names and remove duplicates
+products_df.columns = products_df.columns.str.strip().str.lower().str.replace(' ', '_')
+products_df.drop_duplicates(inplace=True)
+
+
+4. Sales Dataset Cleaning
+Convert Order Date and Delivery Date to standardized date formats.
+Standardize column names.
+Remove duplicates.
+
+# Sales Dataset Cleaning
+sales_df['Order Date'] = pd.to_datetime(sales_df['Order Date'], errors='coerce')
+sales_df['Delivery Date'] = pd.to_datetime(sales_df['Delivery Date'], errors='coerce')
+sales_df.columns = sales_df.columns.str.strip().str.lower().str.replace(' ', '_')
+sales_df.drop_duplicates(inplace=True)
+
+
+5. Stores Dataset Cleaning
+Convert Open Date to a standardized date format.
+Standardize column names.
+Remove duplicates.
+
+# Stores Dataset Cleaning
+stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], errors='coerce')
+stores_df.columns = stores_df.columns.str.strip().str.lower().str.replace(' ', '_')
+stores_df.drop_duplicates(inplace=True)
+
+
+6. Final Integration and Merging
+Merge Sales with Customers, Products, Stores, and Exchange Rates based on common keys.
+Ensure consistency with date formatting and remove temporary columns.
+
+# Merging Sales with Customers
+merged_df = pd.merge(sales_df, customers_df, on='customerkey', how='left')
+
+# Merging Sales with Products
+merged_df = pd.merge(merged_df, products_df, on='productkey', how='left')
+
+# Merging Sales with Stores
+merged_df = pd.merge(merged_df, stores_df, on='storekey', how='left')
+
+# Merging Sales with Exchange Rates on Currency Code and Date
+merged_df['order_date_only'] = merged_df['order_date'].dt.date
+exchange_rates_df['date_only'] = exchange_rates_df['date'].dt.date
+merged_df = pd.merge(merged_df, exchange_rates_df, left_on=['order_date_only', 'currency_code'], 
+                     right_on=['date_only', 'currency'], how='left')
+
+# Dropping temporary columns
+merged_df.drop(['order_date_only', 'date_only', 'currency'], axis=1, inplace=True)
