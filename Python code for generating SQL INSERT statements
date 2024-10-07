@@ -46,8 +46,8 @@ sales_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleane
 # Generate INSERT statements for Sales table
 for index, row in sales_df.iterrows():
     print(f"INSERT INTO Sales (order_number, line_item, order_date, delivery_date, customerkey, storekey, productkey, quantity, currency_code) "
-          f"VALUES ({row['order_number']}, {row['line_item']}, '{row['order_date']}', '{row['delivery_date']}', {row['customerkey']}, {row['storekey']}, "
-          f"{row['productkey']}, {row['quantity']}, '{row['currency_code']}');")
+          f"VALUES ({row['Order Number']}, {row['Line Item']}, '{row['Order Date']}', '{row['Delivery Date']}', {row['CustomerKey']}, {row['StoreKey']}, "
+          f"{row['ProductKey']}, {row['Quantity']}, '{row['Currency Code']}');")
 
 
 
