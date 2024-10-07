@@ -30,17 +30,18 @@ CREATE TABLE Exchange_Rates (
 
 Products Table
 CREATE TABLE Products (
-    productkey INT PRIMARY KEY,
-    product_name VARCHAR(255),
-    brand VARCHAR(100),
-    color VARCHAR(50),
-    unit_cost_usd DECIMAL(10, 5),
-    unit_price_usd DECIMAL(10, 5),
-    subcategorykey INT,
-    subcategory VARCHAR(100),
-    categorykey INT,
-    category VARCHAR(100)
+    ProductKey INT PRIMARY KEY,
+    ProductName VARCHAR(255),
+    Brand VARCHAR(100),
+    Color VARCHAR(50),
+    UnitCostUSD DECIMAL(10, 5),
+    UnitPriceUSD DECIMAL(10, 5),
+    SubcategoryKey INT,
+    Subcategory VARCHAR(100),
+    CategoryKey INT,
+    Category VARCHAR(100)
 );
+
 
 Sales Table
 CREATE TABLE Sales (
