@@ -22,7 +22,8 @@ CREATE TABLE Customers (
 
 Exchange Rates Table
 CREATE TABLE Exchange_Rates (
-    date DATE PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATE,
     currency VARCHAR(10),
     exchange DECIMAL(10, 5)
 );
