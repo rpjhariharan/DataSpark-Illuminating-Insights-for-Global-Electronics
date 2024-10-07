@@ -43,6 +43,7 @@ CREATE TABLE Products (
 );
 
 
+
 Sales Table
 CREATE TABLE Sales (
     order_number INT PRIMARY KEY,
