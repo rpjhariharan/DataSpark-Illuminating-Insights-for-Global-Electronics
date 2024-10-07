@@ -32,9 +32,9 @@ products_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cle
 
 # Generate INSERT statements for Products table
 for index, row in products_df.iterrows():
-    print(f"INSERT INTO Products (productkey, product_name, brand, color, unit_cost_usd, unit_price_usd, subcategorykey, subcategory, categorykey, category) "
-          f"VALUES ({row['productkey']}, '{row['product_name']}', '{row['brand']}', '{row['color']}', {row['unit_cost_usd']}, {row['unit_price_usd']}, "
-          f"{row['subcategorykey']}, '{row['subcategory']}', {row['categorykey']}, '{row['category']}');")
+    print(f"INSERT INTO Products (ProductKey, ProductName, Brand, Color, UnitCostUSD, UnitPriceUSD, SubcategoryKey, Subcategory, CategoryKey, Category) "
+          f"VALUES ({row['ProductKey']}, '{row['Product Name']}', '{row['Brand']}', '{row['Color']}', {row['Unit Cost USD']}, {row['Unit Price USD']}, "
+          f"{row['SubcategoryKey']}, '{row['Subcategory']}', {row['CategoryKey']}, '{row['Category']}');")
 
 
 
