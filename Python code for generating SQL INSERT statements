@@ -56,10 +56,13 @@ for index, row in sales_df.iterrows():
 # Load the Stores dataset
 stores_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Stores.csv')
 
-# Generate INSERT statements for Stores table
+# Convert 'Open Date' to proper format
+stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], format='%m/%d/%Y').dt.strftime('%Y-%m-%d')
+
+# Generate INSERT statements for Stores table with corrected date format
 for index, row in stores_df.iterrows():
     print(f"INSERT INTO Stores (storekey, country, state, square_meters, open_date) "
-          f"VALUES ({row['storekey']}, '{row['country']}', '{row['state']}', {row['square_meters']}, '{row['open_date']}');")
+          f"VALUES ({row['StoreKey']}, '{row['Country']}', '{row['State']}', {row['Square Meters']}, '{row['Open Date']}');")
 
 
 
