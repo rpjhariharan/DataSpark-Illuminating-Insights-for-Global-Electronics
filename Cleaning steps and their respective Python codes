@@ -22,6 +22,7 @@ Standardize column names.
 # Exchange Rates Dataset Cleaning
 # Loading datasets from the specified path
 exchange_rates_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Exchange_Rates.csv', encoding='latin1')
+exchange_rates_df['date'] = pd.to_datetime(exchange_rates_df['date'], format='%d-%m-%Y').dt.strftime('%Y-%m-%d')
 exchange_rates_df['Date'] = pd.to_datetime(exchange_rates_df['Date'], errors='coerce')
 exchange_rates_df['Exchange'] = pd.to_numeric(exchange_rates_df['Exchange'], errors='coerce')
 exchange_rates_df.columns = exchange_rates_df.columns.str.strip().str.lower().str.replace(' ', '_')
