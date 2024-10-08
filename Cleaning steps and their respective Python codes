@@ -78,6 +78,7 @@ Remove duplicates.
 
 # Stores Dataset Cleaning
 stores_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Stores.csv', encoding='latin1')
+stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d')
 stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], errors='coerce')
 stores_df.columns = stores_df.columns.str.strip().str.lower().str.replace(' ', '_')
 stores_df.drop_duplicates(inplace=True)
