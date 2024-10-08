@@ -40,29 +40,45 @@ for index, row in products_df.iterrows():
 
 4. Sales Table
 
+import pandas as pd
+import numpy as np
+
 # Load the Sales dataset
 sales_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Sales.csv')
 
-# Generate INSERT statements for Sales table
+# Generate INSERT statements for Sales table with ON DUPLICATE KEY UPDATE, and handle NaN as NULL
 for index, row in sales_df.iterrows():
-    print(f"INSERT INTO Sales (order_number, line_item, order_date, delivery_date, customerkey, storekey, productkey, quantity, currency_code) "
-          f"VALUES ({row['Order Number']}, {row['Line Item']}, '{row['Order Date']}', '{row['Delivery Date']}', {row['CustomerKey']}, {row['StoreKey']}, "
-          f"{row['ProductKey']}, {row['Quantity']}, '{row['Currency Code']}');")
+    order_number = row['Order Number']
+    line_item = row['Line Item']
+    order_date = f"'{row['Order Date']}'" if pd.notna(row['Order Date']) else 'NULL'
+    delivery_date = f"'{row['Delivery Date']}'" if pd.notna(row['Delivery Date']) else 'NULL'
+    customerkey = row['CustomerKey'] if pd.notna(row['CustomerKey']) else 'NULL'
+    storekey = row['StoreKey'] if pd.notna(row['StoreKey']) else 'NULL'
+    productkey = row['ProductKey'] if pd.notna(row['ProductKey']) else 'NULL'
+    quantity = row['Quantity'] if pd.notna(row['Quantity']) else 'NULL'
+    currency_code = f"'{row['Currency Code']}'" if pd.notna(row['Currency Code']) else 'NULL'
 
+    print(f"INSERT INTO Sales (order_number, line_item, order_date, delivery_date, customerkey, storekey, productkey, quantity, currency_code) "
+          f"VALUES ({order_number}, {line_item}, {order_date}, {delivery_date}, {customerkey}, {storekey}, {productkey}, {quantity}, {currency_code}) "
+          f"ON DUPLICATE KEY UPDATE "
+          f"order_date = VALUES(order_date), delivery_date = VALUES(delivery_date), customerkey = VALUES(customerkey), "
+          f"storekey = VALUES(storekey), productkey = VALUES(productkey), quantity = VALUES(quantity), currency_code = VALUES(currency_code);")
 
 
 5. Stores Table
 
+import pandas as pd
+
 # Load the Stores dataset
 stores_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Cleaned_Stores.csv')
 
-# Convert 'Open Date' to proper format
-stores_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], format='%m/%d/%Y').dt.strftime('%Y-%m-%d')
-
-# Generate INSERT statements for Stores table with corrected date format
+# Generate INSERT statements for Stores table with corrected date format and handle duplicates
 for index, row in stores_df.iterrows():
     print(f"INSERT INTO Stores (storekey, country, state, square_meters, open_date) "
-          f"VALUES ({row['StoreKey']}, '{row['Country']}', '{row['State']}', {row['Square Meters']}, '{row['Open Date']}');")
+          f"VALUES ({row['StoreKey']}, '{row['Country']}', '{row['State']}', {row['Square Meters']}, '{row['Open Date']}') "
+          f"ON DUPLICATE KEY UPDATE "
+          f"country = VALUES(country), state = VALUES(state), square_meters = VALUES(square_meters), open_date = VALUES(open_date);")
+
 
 
 
