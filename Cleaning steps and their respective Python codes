@@ -64,6 +64,7 @@ Remove duplicates.
 
 # Sales Dataset Cleaning
 sales_df = pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Data_spark\Sales.csv', encoding='latin1')
+sales_df['Open Date'] = pd.to_datetime(stores_df['Open Date'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d')
 sales_df['Order Date'] = pd.to_datetime(sales_df['Order Date'], errors='coerce')
 sales_df['Delivery Date'] = pd.to_datetime(sales_df['Delivery Date'], errors='coerce')
 sales_df.columns = sales_df.columns.str.strip().str.lower().str.replace(' ', '_')
