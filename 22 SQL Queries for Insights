@@ -66,7 +66,7 @@ ORDER BY total_sales DESC;
 
 Sales by Currency and Exchange Rate Impact:
 
-SELECT s.currency_code, SUM(s.quantity * p.unitpriceusd * e.exchange_rate) AS total_sales_converted
+SELECT s.currency_code, SUM(s.quantity * p.unitpriceusd * e.exchange) AS total_sales_converted
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 JOIN Exchange_Rates e ON s.order_date = e.date
