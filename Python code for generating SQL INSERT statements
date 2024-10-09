@@ -88,15 +88,57 @@ for index, row in stores_df.iterrows():
 # Load the Final Merged dataset
 merged_df = pd.read_csv('C:/Users/lenovo/OneDrive/Desktop/Data_spark/final/Final_Merged.csv')
 
-# Generate INSERT statements for the Merged table
-# Generate INSERT statements for Merged table
+# Replace NaN values with None, which corresponds to SQL NULL
+merged_df = merged_df.replace({np.nan: None})
+
+# Generate SQL INSERT statements
 for index, row in merged_df.iterrows():
-    print(f"INSERT INTO Merged (OrderNumber, LineItem, OrderDate, DeliveryDate, CustomerKey, StoreKey, ProductKey, Quantity, CurrencyCode, "
-          f"CustomerKey_2, Gender, CustomerName, City, StateCode, State, ZipCode, Country, Continent, Birthday, ProductName, Brand, Color, "
-          f"UnitCostUSD, UnitPriceUSD, SubcategoryKey, Subcategory, CategoryKey, Category, StoreCountry, StoreState, SquareMeters, OpenDate, "
-          f"Currency, ExchangeRate) "
-          f"VALUES ({row['Order Number']}, {row['Line Item']}, '{row['Order Date']}', '{row['Delivery Date']}', {row['CustomerKey']}, {row['StoreKey']}, "
-          f"{row['ProductKey']}, {row['Quantity']}, '{row['Currency Code']}', {row['customerkey']}, '{row['gender']}', '{row['name']}', '{row['city']}', "
-          f"'{row['state_code']}', '{row['state']}', '{row['zip_code']}', '{row['country']}', '{row['continent']}', '{row['birthday']}', '{row['Product Name']}', "
-          f"'{row['Brand']}', '{row['Color']}', {row['Unit Cost USD']}, {row['Unit Price USD']}, {row['SubcategoryKey']}, '{row['Subcategory']}', {row['CategoryKey']}, "
-          f"'{row['Category']}', '{row['Country']}', '{row['State']}', {row['Square Meters']}, '{row['Open Date']}', '{row['currency']}', {row['exchange']});")
+    order_number = row['Order Number'] if row['Order Number'] is not None else 'NULL'
+    line_item = row['Line Item'] if row['Line Item'] is not None else 'NULL'
+    order_date = f"'{row['Order Date']}'" if row['Order Date'] is not None else 'NULL'
+    delivery_date = f"'{row['Delivery Date']}'" if row['Delivery Date'] is not None else 'NULL'
+    customerkey = row['CustomerKey'] if row['CustomerKey'] is not None else 'NULL'
+    storekey = row['StoreKey'] if row['StoreKey'] is not None else 'NULL'
+    productkey = row['ProductKey'] if row['ProductKey'] is not None else 'NULL'
+    quantity = row['Quantity'] if row['Quantity'] is not None else 'NULL'
+    currency_code = f"'{row['Currency Code']}'" if row['Currency Code'] is not None else 'NULL'
+
+    customer_name = f"'{row['name']}'" if row['name'] is not None else 'NULL'
+    city = f"'{row['city']}'" if row['city'] is not None else 'NULL'
+    state_code = f"'{row['state_code']}'" if row['state_code'] is not None else 'NULL'
+    state = f"'{row['state']}'" if row['state'] is not None else 'NULL'
+    zip_code = f"'{row['zip_code']}'" if row['zip_code'] is not None else 'NULL'
+    country = f"'{row['country']}'" if row['country'] is not None else 'NULL'
+    continent = f"'{row['continent']}'" if row['continent'] is not None else 'NULL'
+    birthday = f"'{row['birthday']}'" if row['birthday'] is not None else 'NULL'
+    product_name = f"'{row['Product Name']}'" if row['Product Name'] is not None else 'NULL'
+    brand = f"'{row['Brand']}'" if row['Brand'] is not None else 'NULL'
+    color = f"'{row['Color']}'" if row['Color'] is not None else 'NULL'
+    unit_cost_usd = row['Unit Cost USD'] if row['Unit Cost USD'] is not None else 'NULL'
+    unit_price_usd = row['Unit Price USD'] if row['Unit Price USD'] is not None else 'NULL'
+    subcategory_key = row['SubcategoryKey'] if row['SubcategoryKey'] is not None else 'NULL'
+    subcategory = f"'{row['Subcategory']}'" if row['Subcategory'] is not None else 'NULL'
+    category_key = row['CategoryKey'] if row['CategoryKey'] is not None else 'NULL'
+    category = f"'{row['Category']}'" if row['Category'] is not None else 'NULL'
+    
+    # Columns renamed to match the table structure
+    store_square_meters = row['Square Meters'] if row['Square Meters'] is not None else 'NULL'
+    store_open_date = f"'{row['Open Date']}'" if row['Open Date'] is not None else 'NULL'
+    currency = f"'{row['currency']}'" if row['currency'] is not None else 'NULL'
+    exchange_rate = row['exchange'] if row['exchange'] is not None else 'NULL'
+    
+    # Missing columns added
+    store_country = f"'{row['Country']}'" if row['Country'] is not None else 'NULL'
+    store_state = f"'{row['State']}'" if row['State'] is not None else 'NULL'
+    exchange_date = f"'{row['date']}'" if row['date'] is not None else 'NULL'
+
+    # Generate the SQL query
+    print(
+        f"INSERT INTO merged_dataset (order_number, line_item, order_date, delivery_date, customer_key, store_key, product_key, quantity, currency_code, "
+        f"customer_name, city, state_code, state, zip_code, country, continent, birthday, product_name, brand, color, "
+        f"unit_cost_usd, unit_price_usd, subcategory_key, subcategory, category_key, category, store_square_meters, store_open_date, "
+        f"store_country, store_state, exchange_date, currency, exchange_rate) "
+        f"VALUES ({order_number}, {line_item}, {order_date}, {delivery_date}, {customerkey}, {storekey}, {productkey}, {quantity}, {currency_code}, "
+        f"{customer_name}, {city}, {state_code}, {state}, {zip_code}, {country}, {continent}, {birthday}, {product_name}, "
+        f"{brand}, {color}, {unit_cost_usd}, {unit_price_usd}, {subcategory_key}, {subcategory}, {category_key}, {category}, {store_square_meters}, "
+        f"{store_open_date}, {store_country}, {store_state}, {exchange_date}, {currency}, {exchange_rate});")
