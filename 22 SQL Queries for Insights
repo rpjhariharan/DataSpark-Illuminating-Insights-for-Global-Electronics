@@ -24,7 +24,7 @@ GROUP BY continent, country;
 
 Average Order Value and Frequency of Purchases by Customer:
 
-SELECT c.customerkey, c.name, AVG(s.quantity * p.unitcostusd) AS avg_order_value, COUNT(s.order_number) AS purchase_frequency
+SELECT c.customerkey, c.name, AVG(s.quantity * p.unitpriceusd) AS avg_order_value, COUNT(s.order_number) AS purchase_frequency
 FROM Sales s
 JOIN Customers c ON s.customerkey = c.customerkey
 JOIN Products p ON s.productkey = p.productkey
@@ -34,7 +34,7 @@ GROUP BY c.customerkey, c.name;
 
 Overall Sales Performance (Monthly):
 
-SELECT YEAR(order_date) AS year, MONTH(order_date) AS month, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT YEAR(order_date) AS year, MONTH(order_date) AS month, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY YEAR(order_date), MONTH(order_date)
@@ -44,7 +44,7 @@ ORDER BY year, month;
 
 Top 5 Best-Selling Products by Revenue:
 
-SELECT p.product_name, SUM(s.quantity * p.unit_price_usd) AS total_revenue
+SELECT p.product_name, SUM(s.quantity * p.unitpriceusd) AS total_revenue
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY p.product_name
@@ -55,7 +55,7 @@ LIMIT 5;
 
 Sales Performance by Store:
 
-SELECT st.storekey, st.state, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT st.storekey, st.state, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
 JOIN Products p ON s.productkey = p.productkey
@@ -66,7 +66,7 @@ ORDER BY total_sales DESC;
 
 Sales by Currency and Exchange Rate Impact:
 
-SELECT s.currency_code, SUM(s.quantity * p.unit_price_usd * e.exchange_rate) AS total_sales_converted
+SELECT s.currency_code, SUM(s.quantity * p.unitpriceusd * e.exchange_rate) AS total_sales_converted
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 JOIN Exchange_Rates e ON s.order_date = e.date
@@ -76,7 +76,7 @@ GROUP BY s.currency_code;
 
 Product Profitability (Profit Margins):
 
-SELECT p.product_name, SUM(s.quantity * (p.unit_price_usd - p.unit_cost_usd)) AS total_profit
+SELECT p.product_name, SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY p.product_name
@@ -86,7 +86,7 @@ ORDER BY total_profit DESC;
 
 Store Size and Sales Efficiency (Sales per Square Meter): 
 
-SELECT st.storekey, st.state, SUM(s.quantity * p.unit_price_usd) / st.square_meters AS sales_per_sqm
+SELECT st.storekey, st.state, SUM(s.quantity * p.unitpriceusd) / st.square_meters AS sales_per_sqm
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
 JOIN Products p ON s.productkey = p.productkey
@@ -108,7 +108,7 @@ ORDER BY purchase_frequency DESC;
 
 Customer Lifetime Value (CLTV)- This provides insight into which customers generate the most revenue over their lifetime.
 
-SELECT c.customerkey, c.name, SUM(s.quantity * p.unit_price_usd) AS lifetime_value
+SELECT c.customerkey, c.name, SUM(s.quantity * p.unitpriceusd) AS lifetime_value
 FROM Sales s
 JOIN Customers c ON s.customerkey = c.customerkey
 JOIN Products p ON s.productkey = p.productkey
@@ -119,7 +119,7 @@ ORDER BY lifetime_value DESC;
 
 Sales Trends by Day of the Week- This can help optimize marketing efforts on high-sales days.
 
-SELECT DAYNAME(order_date) AS day_of_week, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT DAYNAME(order_date) AS day_of_week, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY DAYNAME(order_date)
@@ -139,7 +139,7 @@ ORDER BY turnover_rate DESC;
 
 Best Time to Sell (Hourly Sales Trend)- This helps identify peak hours of operation.
 
-SELECT HOUR(order_date) AS hour_of_day, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT HOUR(order_date) AS hour_of_day, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY HOUR(order_date)
@@ -150,8 +150,8 @@ ORDER BY total_sales DESC;
 Sales Growth Rate by Year- This query calculates the percentage growth rate of sales year-over-year.
 
 SELECT YEAR(order_date) AS year, SUM(s.quantity * p.unit_price_usd) AS total_sales, 
-    (SUM(s.quantity * p.unit_price_usd) - LAG(SUM(s.quantity * p.unit_price_usd), 1) OVER (ORDER BY YEAR(order_date))) / 
-    LAG(SUM(s.quantity * p.unit_price_usd), 1) OVER (ORDER BY YEAR(order_date)) * 100 AS growth_rate
+    (SUM(s.quantity * p.unitpriceusd) - LAG(SUM(s.quantity * p.unitpriceusd), 1) OVER (ORDER BY YEAR(order_date))) / 
+    LAG(SUM(s.quantity * p.unitpriceusd), 1) OVER (ORDER BY YEAR(order_date)) * 100 AS growth_rate
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY YEAR(order_date);
@@ -160,7 +160,7 @@ GROUP BY YEAR(order_date);
 
 Sales by Product Category and Subcategory- This helps identify which categories and subcategories drive the most revenue.
 
-SELECT p.category, p.subcategory, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT p.category, p.subcategory, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY p.category, p.subcategory
@@ -171,7 +171,7 @@ ORDER BY total_sales DESC;
 Store Sales and Profitability by Region- This helps identify profitable regions for potential store expansion or optimizations.
 
 SELECT st.country, st.state, SUM(s.quantity * p.unit_price_usd) AS total_sales, 
-    SUM(s.quantity * (p.unit_price_usd - p.unit_cost_usd)) AS total_profit
+    SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
 JOIN Products p ON s.productkey = p.productkey
@@ -182,7 +182,7 @@ ORDER BY total_sales DESC;
 
 Average Sales per Customer per Store- This query provides insight into customer behavior at the store level..
 
-SELECT st.storekey, st.state, c.customerkey, c.name, AVG(s.quantity * p.unit_price_usd) AS avg_sales_per_customer
+SELECT st.storekey, st.state, c.customerkey, c.name, AVG(s.quantity * p.unitpriceusd) AS avg_sales_per_customer
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
 JOIN Customers c ON s.customerkey = c.customerkey
@@ -193,7 +193,7 @@ GROUP BY st.storekey, st.state, c.customerkey, c.name;
 
 Seasonal Sales by Product- Identify which products perform best during specific seasons (spring, summer, etc.).
 
-SELECT p.product_name, QUARTER(order_date) AS sales_quarter, SUM(s.quantity * p.unit_price_usd) AS total_sales
+SELECT p.product_name, QUARTER(order_date) AS sales_quarter, SUM(s.quantity * p.unitpriceusd) AS total_sales
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
 GROUP BY p.product_name, QUARTER(order_date)
@@ -210,7 +210,7 @@ FROM Sales s;
 
 Top 5 Most Profitable Stores- Identify the stores that contribute the most to profit.
 
-SELECT st.storekey, st.state, SUM(s.quantity * (p.unit_price_usd - p.unit_cost_usd)) AS total_profit
+SELECT st.storekey, st.state, SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
 JOIN Products p ON s.productkey = p.productkey
