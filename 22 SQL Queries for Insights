@@ -76,10 +76,10 @@ GROUP BY s.currency_code;
 
 Product Profitability (Profit Margins):
 
-SELECT p.product_name, SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
+SELECT p.productname, SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
-GROUP BY p.product_name
+GROUP BY p.productname
 ORDER BY total_profit DESC;
 
 
@@ -129,10 +129,10 @@ ORDER BY total_sales DESC;
 
 Inventory Turnover Rate- This helps identify which products are moving quickly and which might be overstocked.
 
-SELECT p.product_name, SUM(s.quantity) AS units_sold, (SUM(s.quantity) / COUNT(DISTINCT s.order_number)) AS turnover_rate
+SELECT p.productname, SUM(s.quantity) AS units_sold, (SUM(s.quantity) / COUNT(DISTINCT s.order_number)) AS turnover_rate
 FROM Sales s
 JOIN Products p ON s.productkey = p.productkey
-GROUP BY p.product_name
+GROUP BY p.productname
 ORDER BY turnover_rate DESC;
 
 
@@ -149,7 +149,7 @@ ORDER BY total_sales DESC;
 
 Sales Growth Rate by Year- This query calculates the percentage growth rate of sales year-over-year.
 
-SELECT YEAR(order_date) AS year, SUM(s.quantity * p.unit_price_usd) AS total_sales, 
+SELECT YEAR(order_date) AS year, SUM(s.quantity * p.unitpriceusd) AS total_sales, 
     (SUM(s.quantity * p.unitpriceusd) - LAG(SUM(s.quantity * p.unitpriceusd), 1) OVER (ORDER BY YEAR(order_date))) / 
     LAG(SUM(s.quantity * p.unitpriceusd), 1) OVER (ORDER BY YEAR(order_date)) * 100 AS growth_rate
 FROM Sales s
@@ -170,7 +170,7 @@ ORDER BY total_sales DESC;
 
 Store Sales and Profitability by Region- This helps identify profitable regions for potential store expansion or optimizations.
 
-SELECT st.country, st.state, SUM(s.quantity * p.unit_price_usd) AS total_sales, 
+SELECT st.country, st.state, SUM(s.quantity * p.unitpriceusd) AS total_sales, 
     SUM(s.quantity * (p.unitpriceusd - p.unitcostusd)) AS total_profit
 FROM Sales s
 JOIN Stores st ON s.storekey = st.storekey
