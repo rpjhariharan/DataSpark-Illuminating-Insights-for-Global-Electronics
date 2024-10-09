@@ -24,7 +24,7 @@ GROUP BY continent, country;
 
 Average Order Value and Frequency of Purchases by Customer:
 
-SELECT c.customerkey, c.name, AVG(s.quantity * p.unit_price_usd) AS avg_order_value, COUNT(s.order_number) AS purchase_frequency
+SELECT c.customerkey, c.name, AVG(s.quantity * p.unitcostusd) AS avg_order_value, COUNT(s.order_number) AS purchase_frequency
 FROM Sales s
 JOIN Customers c ON s.customerkey = c.customerkey
 JOIN Products p ON s.productkey = p.productkey
